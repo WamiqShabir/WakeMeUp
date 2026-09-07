@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wake Up</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: #050508;
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Soft animated background glow */
+    body::before {
+      content: "";
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(255, 59, 48, 0.18) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 0;
+      animation: pulse 8s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+      50% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.9; }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 420px;
+      padding: 20px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 28px;
+      padding: 48px 36px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      transition: all 0.4s ease;
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #fff 0%, #a1a1aa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      color: #71717a;
+      font-size: 0.95rem;
+      margin-bottom: 40px;
+      font-weight: 400;
+    }
+
+    .input-wrapper {
+      position: relative;
+      margin-bottom: 28px;
+    }
+
+    input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 18px 20px;
+      font-size: 1.4rem;
+      color: white;
+      text-align: center;
+      letter-spacing: 8px;
+      font-weight: 500;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    input:focus {
+      border-color: rgba(255, 59, 48, 0.5);
+      background: rgba(255, 255, 255, 0.07);
+      box-shadow: 0 0 0 4px rgba(255, 59, 48, 0.15);
+    }
+
+    input::placeholder {
+      color: #52525b;
+      letter-spacing: 4px;
+    }
+
+    /* Wake Up button - hidden by default */
+    #wakeBtn {
+      display: none;
+      width: 100%;
+      background: linear-gradient(135deg, #ff3b30 0%, #ff2d55 100%);
+      color: white;
+      border: none;
+      border-radius: 16px;
+      padding: 18px;
+      font-size: 1.15rem;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 10px 30px -5px rgba(255, 59, 48, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #wakeBtn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: 0.5s;
+    }
+
+    #wakeBtn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 35px -5px rgba(255, 59, 48, 0.5);
+    }
+
+    #wakeBtn:hover::before {
+      left: 100%;
+    }
+
+    #wakeBtn:active {
+      transform: translateY(0);
+    }
+
+    #wakeBtn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .status {
+      margin-top: 28px;
+      font-size: 0.9rem;
+      color: #a1a1aa;
+      min-height: 24px;
+      transition: all 0.3s ease;
+    }
+
+    .status.success {
+      color: #34d399;
+    }
+
+    .status.error {
+      color: #f87171;
+    }
+
+    /* Small footer */
+    .footer {
+      margin-top: 32px;
+      font-size: 0.8rem;
+      color: #52525b;
+    }
+
+    /* Entrance animation */
+    .card {
+      animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .card {
+        padding: 40px 24px;
+        border-radius: 24px;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Wake Up</h1>
+      <p class="subtitle">Enter the access code</p>
+
+      <div class="input-wrapper">
+        <input 
+          type="password" 
+          id="code" 
+          placeholder="••••" 
+          maxlength="8" 
+          autocomplete="off"
+          autofocus
+        >
+      </div>
+
+      <button id="wakeBtn">Wake Up Device</button>
+
+      <div class="status" id="status"></div>
+    </div>
+
+    <div class="footer" style="text-align: center;">
+      Secure remote trigger
+    </div>
+  </div>
+
+  <script>
+    // ★★★ CHANGE THIS to your secret topic (must match the Android app) ★★★
+    const TOPIC = "wakeup-2006-yourname123";
+
+    const codeInput = document.getElementById("code");
+    const wakeBtn = document.getElementById("wakeBtn");
+    const status = document.getElementById("status");
+
+    codeInput.addEventListener("input", () => {
+      if (codeInput.value === "2006") {
+        wakeBtn.style.display = "block";
+        // small delay for smooth appearance
+        setTimeout(() => {
+          wakeBtn.style.opacity = "1";
+        }, 10);
+        status.textContent = "Code accepted";
+        status.className = "status success";
+      } else {
+        wakeBtn.style.display = "none";
+        status.textContent = "";
+        status.className = "status";
+      }
+    });
+
+    wakeBtn.addEventListener("click", async () => {
+      wakeBtn.disabled = true;
+      wakeBtn.textContent = "Sending…";
+      status.textContent = "Transmitting wake signal…";
+      status.className = "status";
+
+      try {
+        const res = await fetch(`https://ntfy.sh/${TOPIC}`, {
+          method: "POST",
+          body: "WAKE_UP_NOW",
+          headers: {
+            "Title": "Wake Up!",
+            "Priority": "max",
+            "Tags": "rotating_light,alarm_clock"
+          }
+        });
+
+        if (res.ok) {
+          status.textContent = "Signal sent successfully";
+          status.className = "status success";
+          wakeBtn.textContent = "Sent ✓";
+          
+          // Reset button after 3 seconds
+          setTimeout(() => {
+            wakeBtn.disabled = false;
+            wakeBtn.textContent = "Wake Up Device";
+          }, 3000);
+        } else {
+          throw new Error("Failed to send");
+        }
+      } catch (e) {
+        status.textContent = "Connection error – try again";
+        status.className = "status error";
+        wakeBtn.disabled = false;
+        wakeBtn.textContent = "Wake Up Device";
+      }
+    });
+
+    // Allow pressing Enter
+    codeInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter" && codeInput.value === "2006") {
+        wakeBtn.click();
+      }
+    });
+  </script>
+</body>
+</html>
