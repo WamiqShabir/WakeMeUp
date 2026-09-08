@@ -22,11 +22,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
+      overflow-x: hidden;
       position: relative;
     }
 
-    /* Soft animated background glow */
     body::before {
       content: "";
       position: absolute;
@@ -61,7 +60,6 @@
       backdrop-filter: blur(20px);
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
       text-align: center;
-      transition: all 0.4s ease;
     }
 
     h1 {
@@ -77,82 +75,68 @@
     .subtitle {
       color: #71717a;
       font-size: 0.95rem;
-      margin-bottom: 40px;
-      font-weight: 400;
+      margin-bottom: 36px;
     }
 
-    .input-wrapper {
-      position: relative;
-      margin-bottom: 28px;
-    }
-
-    input {
+    input, textarea {
       width: 100%;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 16px;
-      padding: 18px 20px;
-      font-size: 1.4rem;
+      padding: 16px 18px;
+      font-size: 1.1rem;
       color: white;
-      text-align: center;
-      letter-spacing: 8px;
-      font-weight: 500;
       outline: none;
       transition: all 0.3s ease;
+      font-family: inherit;
     }
 
-    input:focus {
+    input:focus, textarea:focus {
       border-color: rgba(255, 59, 48, 0.5);
       background: rgba(255, 255, 255, 0.07);
       box-shadow: 0 0 0 4px rgba(255, 59, 48, 0.15);
     }
 
-    input::placeholder {
-      color: #52525b;
-      letter-spacing: 4px;
+    #code {
+      text-align: center;
+      letter-spacing: 8px;
+      font-size: 1.4rem;
+      margin-bottom: 24px;
     }
 
-    /* Wake Up button - hidden by default */
-    #wakeBtn {
+    #messageBox {
       display: none;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    #messageBox textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .btn {
       width: 100%;
-      background: linear-gradient(135deg, #ff3b30 0%, #ff2d55 100%);
-      color: white;
       border: none;
       border-radius: 16px;
-      padding: 18px;
-      font-size: 1.15rem;
+      padding: 16px;
+      font-size: 1.1rem;
       font-weight: 600;
       cursor: pointer;
-      letter-spacing: 0.5px;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 10px 30px -5px rgba(255, 59, 48, 0.4);
-      position: relative;
-      overflow: hidden;
+      transition: all 0.3s ease;
+      margin-top: 12px;
     }
 
-    #wakeBtn::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      transition: 0.5s;
+    #wakeBtn {
+      display: none;
+      background: linear-gradient(135deg, #ff3b30 0%, #ff2d55 100%);
+      color: white;
+      box-shadow: 0 10px 30px -5px rgba(255, 59, 48, 0.4);
     }
 
     #wakeBtn:hover {
       transform: translateY(-2px);
       box-shadow: 0 15px 35px -5px rgba(255, 59, 48, 0.5);
-    }
-
-    #wakeBtn:hover::before {
-      left: 100%;
-    }
-
-    #wakeBtn:active {
-      transform: translateY(0);
     }
 
     #wakeBtn:disabled {
@@ -161,54 +145,56 @@
       transform: none;
     }
 
+    .choice-buttons {
+      display: none;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .choice-buttons button {
+      flex: 1;
+      padding: 14px;
+      border-radius: 14px;
+      font-weight: 600;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+    }
+
+    #yesBtn {
+      background: #22c55e;
+      color: white;
+    }
+
+    #noBtn {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
     .status {
-      margin-top: 28px;
+      margin-top: 24px;
       font-size: 0.9rem;
       color: #a1a1aa;
       min-height: 24px;
-      transition: all 0.3s ease;
     }
 
-    .status.success {
-      color: #34d399;
-    }
+    .status.success { color: #34d399; }
+    .status.error { color: #f87171; }
 
-    .status.error {
-      color: #f87171;
-    }
-
-    /* Small footer */
     .footer {
-      margin-top: 32px;
+      margin-top: 28px;
       font-size: 0.8rem;
       color: #52525b;
+      text-align: center;
     }
 
-    /* Entrance animation */
     .card {
       animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
     @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* Responsive */
-    @media (max-width: 480px) {
-      .card {
-        padding: 40px 24px;
-        border-radius: 24px;
-      }
-      h1 {
-        font-size: 1.5rem;
-      }
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
@@ -218,95 +204,138 @@
       <h1>Wake Up</h1>
       <p class="subtitle">Enter the access code</p>
 
-      <div class="input-wrapper">
-        <input 
-          type="password" 
-          id="code" 
-          placeholder="••••" 
-          maxlength="8" 
-          autocomplete="off"
-          autofocus
-        >
+      <input type="password" id="code" placeholder="••••" maxlength="8" autocomplete="off" autofocus>
+
+      <button id="wakeBtn" class="btn">Wake Up Device</button>
+
+      <!-- Ask for message -->
+      <div class="choice-buttons" id="choiceButtons">
+        <button id="yesBtn">Yes, add message</button>
+        <button id="noBtn">No, just wake</button>
       </div>
 
-      <button id="wakeBtn">Wake Up Device</button>
+      <!-- Message input -->
+      <div id="messageBox">
+        <textarea id="customMessage" placeholder="Type your message here..."></textarea>
+        <button id="sendWithMessage" class="btn" style="background: linear-gradient(135deg, #ff3b30, #ff2d55); color: white; margin-top: 12px;">
+          Send Wake + Message
+        </button>
+      </div>
 
       <div class="status" id="status"></div>
     </div>
 
-    <div class="footer" style="text-align: center;">
-      Secure remote trigger
-    </div>
+    <div class="footer">Secure remote trigger</div>
   </div>
 
   <script>
-    // ★★★ CHANGE THIS to your secret topic (must match the Android app) ★★★
-    const TOPIC = "Wakeup-Munna2006-123";
+    // ★★★ CHANGE THIS to your real topic ★★★
+    const TOPIC = "wakeup-2006-yourname123";
 
     const codeInput = document.getElementById("code");
     const wakeBtn = document.getElementById("wakeBtn");
+    const choiceButtons = document.getElementById("choiceButtons");
+    const messageBox = document.getElementById("messageBox");
+    const customMessage = document.getElementById("customMessage");
+    const sendWithMessage = document.getElementById("sendWithMessage");
     const status = document.getElementById("status");
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
 
+    // Show Wake button when code is correct
     codeInput.addEventListener("input", () => {
       if (codeInput.value === "2006") {
         wakeBtn.style.display = "block";
-        // small delay for smooth appearance
-        setTimeout(() => {
-          wakeBtn.style.opacity = "1";
-        }, 10);
         status.textContent = "Code accepted";
         status.className = "status success";
       } else {
         wakeBtn.style.display = "none";
+        choiceButtons.style.display = "none";
+        messageBox.style.display = "none";
         status.textContent = "";
         status.className = "status";
       }
     });
 
-    wakeBtn.addEventListener("click", async () => {
-      wakeBtn.disabled = true;
-      wakeBtn.textContent = "Sending…";
-      status.textContent = "Transmitting wake signal…";
+    // When main Wake button is clicked → ask for message
+    wakeBtn.addEventListener("click", () => {
+      wakeBtn.style.display = "none";
+      choiceButtons.style.display = "flex";
+      status.textContent = "Do you want to add a custom message?";
       status.className = "status";
+    });
+
+    // User chooses YES → show message box
+    yesBtn.addEventListener("click", () => {
+      choiceButtons.style.display = "none";
+      messageBox.style.display = "block";
+      customMessage.focus();
+      status.textContent = "Type your message below";
+    });
+
+    // User chooses NO → send normal wake
+    noBtn.addEventListener("click", () => {
+      sendWake("WAKE_UP_NOW", "Wake Up!");
+    });
+
+    // Send with custom message
+    sendWithMessage.addEventListener("click", () => {
+      const msg = customMessage.value.trim();
+      if (!msg) {
+        status.textContent = "Please type a message first";
+        status.className = "status error";
+        return;
+      }
+      sendWake(msg, "Message from WakeMeUp");
+    });
+
+    // Main send function
+    async function sendWake(body, title) {
+      status.textContent = "Sending…";
+      status.className = "status";
+      sendWithMessage.disabled = true;
+      noBtn.disabled = true;
 
       try {
         const res = await fetch(`https://ntfy.sh/${TOPIC}`, {
           method: "POST",
-          body: "WAKE_UP_NOW",
+          body: body,
           headers: {
-            "Title": "Wake Up!",
+            "Title": title,
             "Priority": "max",
             "Tags": "rotating_light,alarm_clock"
           }
         });
 
         if (res.ok) {
-          status.textContent = "Signal sent successfully";
+          status.textContent = "Signal sent successfully!";
           status.className = "status success";
-          wakeBtn.textContent = "Sent ✓";
-          
-          // Reset button after 3 seconds
+
+          // Reset UI after 3 seconds
           setTimeout(() => {
-            wakeBtn.disabled = false;
-            wakeBtn.textContent = "Wake Up Device";
+            resetUI();
           }, 3000);
         } else {
-          throw new Error("Failed to send");
+          throw new Error("Failed");
         }
       } catch (e) {
         status.textContent = "Connection error – try again";
         status.className = "status error";
-        wakeBtn.disabled = false;
-        wakeBtn.textContent = "Wake Up Device";
+        sendWithMessage.disabled = false;
+        noBtn.disabled = false;
       }
-    });
+    }
 
-    // Allow pressing Enter
-    codeInput.addEventListener("keypress", (e) => {
-      if (e.key === "Enter" && codeInput.value === "2006") {
-        wakeBtn.click();
-      }
-    });
+    function resetUI() {
+      choiceButtons.style.display = "none";
+      messageBox.style.display = "none";
+      wakeBtn.style.display = "block";
+      customMessage.value = "";
+      sendWithMessage.disabled = false;
+      noBtn.disabled = false;
+      status.textContent = "Ready";
+      status.className = "status";
+    }
   </script>
 </body>
 </html>
