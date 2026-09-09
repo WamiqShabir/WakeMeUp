@@ -8,7 +8,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -18,6 +22,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 20px;
       position: relative;
       overflow-x: hidden;
     }
@@ -25,50 +30,50 @@
     body::before {
       content: "";
       position: absolute;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(255, 59, 48, 0.18) 0%, transparent 70%);
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(255, 59, 48, 0.15) 0%, transparent 70%);
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       z-index: 0;
-      animation: pulse 8s ease-in-out infinite;
+      animation: pulse 9s ease-in-out infinite;
     }
 
     @keyframes pulse {
-      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
-      50% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.9; }
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+      50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.85; }
     }
 
     .container {
       position: relative;
       z-index: 1;
       width: 100%;
-      max-width: 420px;
-      padding: 20px;
+      max-width: 440px;
     }
 
     .card {
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 28px;
-      padding: 48px 32px;
-      backdrop-filter: blur(20px);
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      padding: 40px 28px;
+      backdrop-filter: blur(24px);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
       text-align: center;
-      animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(30px); }
+      from { opacity: 0; transform: translateY(25px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
     h1 {
-      font-size: 1.75rem;
+      font-size: 1.9rem;
       font-weight: 700;
-      margin-bottom: 8px;
-      background: linear-gradient(135deg, #fff 0%, #a1a1aa 100%);
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+      background: linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -76,106 +81,196 @@
     .subtitle {
       color: #71717a;
       font-size: 0.95rem;
-      margin-bottom: 36px;
+      margin-bottom: 32px;
     }
 
-    input, textarea {
+    #code {
       width: 100%;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 16px;
-      padding: 16px 18px;
-      font-size: 1.1rem;
+      padding: 16px;
+      font-size: 1.5rem;
       color: white;
+      text-align: center;
+      letter-spacing: 10px;
       outline: none;
-      font-family: inherit;
-      transition: all 0.3s ease;
+      margin-bottom: 24px;
+      transition: all 0.25s ease;
     }
 
-    input:focus, textarea:focus {
-      border-color: rgba(255, 59, 48, 0.5);
+    #code:focus {
+      border-color: rgba(255, 59, 48, 0.6);
       background: rgba(255, 255, 255, 0.07);
       box-shadow: 0 0 0 4px rgba(255, 59, 48, 0.15);
     }
 
-    #code {
-      text-align: center;
-      letter-spacing: 8px;
-      font-size: 1.4rem;
-      margin-bottom: 24px;
-    }
-
-    .btn {
-      width: 100%;
-      border: none;
-      border-radius: 16px;
-      padding: 16px;
-      font-size: 1.05rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.25s ease;
-      margin-top: 10px;
-    }
-
+    /* Main Wake Button */
     #wakeBtn {
       display: none;
-      background: linear-gradient(135deg, #ff3b30 0%, #ff2d55 100%);
+      width: 100%;
+      background: linear-gradient(135deg, #ff3b30, #ff2d55);
       color: white;
-      box-shadow: 0 10px 30px -5px rgba(255, 59, 48, 0.4);
+      border: none;
+      border-radius: 16px;
+      padding: 17px;
+      font-size: 1.15rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 10px 30px -5px rgba(255, 59, 48, 0.45);
+      transition: all 0.25s ease;
     }
 
     #wakeBtn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 15px 35px -5px rgba(255, 59, 48, 0.5);
+      box-shadow: 0 14px 35px -5px rgba(255, 59, 48, 0.55);
     }
 
-    /* Three choice buttons */
-    #choiceButtons {
+    /* Options Section */
+    #optionsSection {
       display: none;
-      flex-direction: column;
-      gap: 10px;
       margin-top: 8px;
     }
 
-    #choiceButtons button {
-      padding: 15px;
-      border-radius: 14px;
-      font-weight: 600;
+    .options-title {
       font-size: 1rem;
-      border: none;
-      cursor: pointer;
-      color: white;
+      color: #a1a1aa;
+      margin-bottom: 16px;
+      font-weight: 500;
     }
 
-    #justWake { background: #3b82f6; }
-    #withMessage { background: #8b5cf6; }
-    #withSpeak { background: #22c55e; }
-
-    #messageBox {
-      display: none;
-      margin-top: 20px;
-    }
-
-    #messageBox textarea {
-      min-height: 100px;
-      resize: vertical;
+    .option-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 18px 16px;
       margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .option-card:hover {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .option-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    .icon-1 { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+    .icon-2 { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
+    .icon-3 { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
+
+    .option-text h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .option-text p {
+      font-size: 0.82rem;
+      color: #71717a;
+    }
+
+    /* Message Box */
+    #messageSection {
+      display: none;
+      margin-top: 12px;
+      text-align: left;
+    }
+
+    #messageSection label {
+      display: block;
+      font-size: 0.9rem;
+      color: #a1a1aa;
+      margin-bottom: 8px;
+    }
+
+    #customMessage {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 16px;
+      font-size: 1rem;
+      color: white;
+      min-height: 110px;
+      resize: vertical;
+      outline: none;
+      font-family: inherit;
+      margin-bottom: 16px;
+    }
+
+    #customMessage:focus {
+      border-color: rgba(255, 59, 48, 0.5);
+      box-shadow: 0 0 0 4px rgba(255, 59, 48, 0.12);
+    }
+
+    #sendBtn {
+      width: 100%;
+      background: linear-gradient(135deg, #ff3b30, #ff2d55);
+      color: white;
+      border: none;
+      border-radius: 16px;
+      padding: 16px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    #sendBtn:hover {
+      transform: translateY(-2px);
+    }
+
+    #sendBtn:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .back-btn {
+      background: none;
+      border: none;
+      color: #71717a;
+      font-size: 0.9rem;
+      margin-top: 14px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .back-btn:hover {
+      color: #a1a1aa;
     }
 
     .status {
-      margin-top: 24px;
+      margin-top: 22px;
       font-size: 0.9rem;
       color: #a1a1aa;
-      min-height: 24px;
+      min-height: 22px;
     }
+
     .status.success { color: #34d399; }
     .status.error { color: #f87171; }
 
     .footer {
-      margin-top: 28px;
+      margin-top: 24px;
+      text-align: center;
       font-size: 0.8rem;
       color: #52525b;
-      text-align: center;
     }
   </style>
 </head>
@@ -185,105 +280,134 @@
       <h1>Wake Up</h1>
       <p class="subtitle">Enter the access code</p>
 
-      <input type="password" id="code" placeholder="••••" maxlength="8" autocomplete="off" autofocus>
+      <input type="password" id="code" placeholder="••••" maxlength="10" autocomplete="off" autofocus>
 
-      <button id="wakeBtn" class="btn">Wake Up Device</button>
+      <button id="wakeBtn">Wake Up Device</button>
 
-      <!-- Three options -->
-      <div id="choiceButtons">
-        <button id="justWake">1. Just Wake Up</button>
-        <button id="withMessage">2. Wake + Custom Message</button>
-        <button id="withSpeak">3. Wake + Message + Read Aloud</button>
+      <!-- Options -->
+      <div id="optionsSection">
+        <div class="options-title">Choose what to do</div>
+
+        <div class="option-card" id="opt1">
+          <div class="option-icon icon-1">⚡</div>
+          <div class="option-text">
+            <h3>Just Wake Up</h3>
+            <p>Flash + Vibrate + Alarm only</p>
+          </div>
+        </div>
+
+        <div class="option-card" id="opt2">
+          <div class="option-icon icon-2">💬</div>
+          <div class="option-text">
+            <h3>Wake + Message</h3>
+            <p>Send a custom message in the notification</p>
+          </div>
+        </div>
+
+        <div class="option-card" id="opt3">
+          <div class="option-icon icon-3">🔊</div>
+          <div class="option-text">
+            <h3>Wake + Message + Speak</h3>
+            <p>Phone will read the message out loud</p>
+          </div>
+        </div>
       </div>
 
-      <!-- Message input (shared for option 2 and 3) -->
-      <div id="messageBox">
-        <textarea id="customMessage" placeholder="Type the message here..."></textarea>
-        <button id="sendBtn" class="btn" style="background: linear-gradient(135deg, #ff3b30, #ff2d55); color: white;">
-          Send Now
-        </button>
+      <!-- Message Input -->
+      <div id="messageSection">
+        <label id="messageLabel">Type your message</label>
+        <textarea id="customMessage" placeholder="Write anything here..."></textarea>
+        <button id="sendBtn">Send Now</button>
+        <button class="back-btn" id="backBtn">← Back to options</button>
       </div>
 
       <div class="status" id="status"></div>
     </div>
+
     <div class="footer">Secure remote trigger</div>
   </div>
 
   <script>
-    // ★★★ CHANGE THIS to your real topic ★★★
     const TOPIC = "Wakeup-Munna2006-123";
 
     const codeInput = document.getElementById("code");
     const wakeBtn = document.getElementById("wakeBtn");
-    const choiceButtons = document.getElementById("choiceButtons");
-    const messageBox = document.getElementById("messageBox");
+    const optionsSection = document.getElementById("optionsSection");
+    const messageSection = document.getElementById("messageSection");
     const customMessage = document.getElementById("customMessage");
     const sendBtn = document.getElementById("sendBtn");
     const status = document.getElementById("status");
+    const messageLabel = document.getElementById("messageLabel");
+    const backBtn = document.getElementById("backBtn");
 
-    let mode = ""; // "message" or "speak"
+    let selectedMode = ""; // "message" or "speak"
 
-    // Show main button when code is correct
+    // Code check
     codeInput.addEventListener("input", () => {
       if (codeInput.value === "2006") {
         wakeBtn.style.display = "block";
         status.textContent = "Code accepted";
         status.className = "status success";
       } else {
-        resetAll();
+        resetUI();
       }
     });
 
-    // Show the 3 choices
+    // Show options
     wakeBtn.addEventListener("click", () => {
       wakeBtn.style.display = "none";
-      choiceButtons.style.display = "flex";
-      status.textContent = "Choose an option";
-      status.className = "status";
+      optionsSection.style.display = "block";
+      status.textContent = "";
     });
 
     // Option 1 - Just Wake
-    document.getElementById("justWake").addEventListener("click", () => {
-      sendWake("WAKE_UP_NOW", "Wake Up!", false);
+    document.getElementById("opt1").addEventListener("click", () => {
+      sendSignal("WAKE_UP_NOW", "Wake Up!", false);
     });
 
-    // Option 2 - Message only
-    document.getElementById("withMessage").addEventListener("click", () => {
-      mode = "message";
-      choiceButtons.style.display = "none";
-      messageBox.style.display = "block";
+    // Option 2 - Message
+    document.getElementById("opt2").addEventListener("click", () => {
+      selectedMode = "message";
+      optionsSection.style.display = "none";
+      messageSection.style.display = "block";
+      messageLabel.textContent = "Type your message";
       customMessage.focus();
-      status.textContent = "Type your message";
     });
 
-    // Option 3 - Message + Read Aloud
-    document.getElementById("withSpeak").addEventListener("click", () => {
-      mode = "speak";
-      choiceButtons.style.display = "none";
-      messageBox.style.display = "block";
+    // Option 3 - Speak
+    document.getElementById("opt3").addEventListener("click", () => {
+      selectedMode = "speak";
+      optionsSection.style.display = "none";
+      messageSection.style.display = "block";
+      messageLabel.textContent = "Type the message to be spoken";
       customMessage.focus();
-      status.textContent = "Type the message that will be spoken";
     });
 
-    // Send button
+    // Back button
+    backBtn.addEventListener("click", () => {
+      messageSection.style.display = "none";
+      optionsSection.style.display = "block";
+      customMessage.value = "";
+    });
+
+    // Send message
     sendBtn.addEventListener("click", () => {
       const msg = customMessage.value.trim();
       if (!msg) {
-        status.textContent = "Please type a message first";
+        status.textContent = "Please type a message";
         status.className = "status error";
         return;
       }
 
-      if (mode === "speak") {
-        // Special prefix so MacroDroid knows it should speak
-        sendWake("SPEAK:" + msg, "Message + Speak", true);
+      if (selectedMode === "speak") {
+        sendSignal("SPEAK:" + msg, "Message + Speak", true);
       } else {
-        sendWake(msg, "Custom Message", false);
+        sendSignal(msg, "Custom Message", false);
       }
     });
 
-    async function sendWake(body, title, isSpeak) {
-      status.textContent = "Sending…";
+    async function sendSignal(body, title, isSpeak) {
+      status.textContent = "Sending signal...";
       status.className = "status";
       sendBtn.disabled = true;
 
@@ -301,21 +425,21 @@
         if (res.ok) {
           status.textContent = "Signal sent successfully!";
           status.className = "status success";
-          setTimeout(resetAll, 2800);
+          setTimeout(resetUI, 2500);
         } else {
-          throw new Error("Failed");
+          throw new Error();
         }
       } catch (e) {
-        status.textContent = "Connection error – try again";
+        status.textContent = "Failed to send. Try again.";
         status.className = "status error";
         sendBtn.disabled = false;
       }
     }
 
-    function resetAll() {
+    function resetUI() {
       wakeBtn.style.display = codeInput.value === "2006" ? "block" : "none";
-      choiceButtons.style.display = "none";
-      messageBox.style.display = "none";
+      optionsSection.style.display = "none";
+      messageSection.style.display = "none";
       customMessage.value = "";
       sendBtn.disabled = false;
       status.textContent = codeInput.value === "2006" ? "Code accepted" : "";
