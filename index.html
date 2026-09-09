@@ -8,11 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -22,8 +18,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow-x: hidden;
       position: relative;
+      overflow-x: hidden;
     }
 
     body::before {
@@ -56,16 +52,21 @@
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 28px;
-      padding: 48px 36px;
+      padding: 48px 32px;
       backdrop-filter: blur(20px);
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
       text-align: center;
+      animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     h1 {
       font-size: 1.75rem;
       font-weight: 700;
-      letter-spacing: -0.5px;
       margin-bottom: 8px;
       background: linear-gradient(135deg, #fff 0%, #a1a1aa 100%);
       -webkit-background-clip: text;
@@ -87,8 +88,8 @@
       font-size: 1.1rem;
       color: white;
       outline: none;
-      transition: all 0.3s ease;
       font-family: inherit;
+      transition: all 0.3s ease;
     }
 
     input:focus, textarea:focus {
@@ -104,27 +105,16 @@
       margin-bottom: 24px;
     }
 
-    #messageBox {
-      display: none;
-      margin-top: 20px;
-      margin-bottom: 20px;
-    }
-
-    #messageBox textarea {
-      min-height: 90px;
-      resize: vertical;
-    }
-
     .btn {
       width: 100%;
       border: none;
       border-radius: 16px;
       padding: 16px;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.3s ease;
-      margin-top: 12px;
+      transition: all 0.25s ease;
+      margin-top: 10px;
     }
 
     #wakeBtn {
@@ -139,36 +129,37 @@
       box-shadow: 0 15px 35px -5px rgba(255, 59, 48, 0.5);
     }
 
-    #wakeBtn:disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .choice-buttons {
+    /* Three choice buttons */
+    #choiceButtons {
       display: none;
-      gap: 12px;
-      margin-top: 16px;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 8px;
     }
 
-    .choice-buttons button {
-      flex: 1;
-      padding: 14px;
+    #choiceButtons button {
+      padding: 15px;
       border-radius: 14px;
       font-weight: 600;
       font-size: 1rem;
       border: none;
       cursor: pointer;
-    }
-
-    #yesBtn {
-      background: #22c55e;
       color: white;
     }
 
-    #noBtn {
-      background: rgba(255, 255, 255, 0.1);
-      color: white;
+    #justWake { background: #3b82f6; }
+    #withMessage { background: #8b5cf6; }
+    #withSpeak { background: #22c55e; }
+
+    #messageBox {
+      display: none;
+      margin-top: 20px;
+    }
+
+    #messageBox textarea {
+      min-height: 100px;
+      resize: vertical;
+      margin-bottom: 12px;
     }
 
     .status {
@@ -177,7 +168,6 @@
       color: #a1a1aa;
       min-height: 24px;
     }
-
     .status.success { color: #34d399; }
     .status.error { color: #f87171; }
 
@@ -186,15 +176,6 @@
       font-size: 0.8rem;
       color: #52525b;
       text-align: center;
-    }
-
-    .card {
-      animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
@@ -208,23 +189,23 @@
 
       <button id="wakeBtn" class="btn">Wake Up Device</button>
 
-      <!-- Ask for message -->
-      <div class="choice-buttons" id="choiceButtons">
-        <button id="yesBtn">Yes, add message</button>
-        <button id="noBtn">No, just wake</button>
+      <!-- Three options -->
+      <div id="choiceButtons">
+        <button id="justWake">1. Just Wake Up</button>
+        <button id="withMessage">2. Wake + Custom Message</button>
+        <button id="withSpeak">3. Wake + Message + Read Aloud</button>
       </div>
 
-      <!-- Message input -->
+      <!-- Message input (shared for option 2 and 3) -->
       <div id="messageBox">
-        <textarea id="customMessage" placeholder="Type your message here..."></textarea>
-        <button id="sendWithMessage" class="btn" style="background: linear-gradient(135deg, #ff3b30, #ff2d55); color: white; margin-top: 12px;">
-          Send Wake + Message
+        <textarea id="customMessage" placeholder="Type the message here..."></textarea>
+        <button id="sendBtn" class="btn" style="background: linear-gradient(135deg, #ff3b30, #ff2d55); color: white;">
+          Send Now
         </button>
       </div>
 
       <div class="status" id="status"></div>
     </div>
-
     <div class="footer">Secure remote trigger</div>
   </div>
 
@@ -237,64 +218,74 @@
     const choiceButtons = document.getElementById("choiceButtons");
     const messageBox = document.getElementById("messageBox");
     const customMessage = document.getElementById("customMessage");
-    const sendWithMessage = document.getElementById("sendWithMessage");
+    const sendBtn = document.getElementById("sendBtn");
     const status = document.getElementById("status");
-    const yesBtn = document.getElementById("yesBtn");
-    const noBtn = document.getElementById("noBtn");
 
-    // Show Wake button when code is correct
+    let mode = ""; // "message" or "speak"
+
+    // Show main button when code is correct
     codeInput.addEventListener("input", () => {
       if (codeInput.value === "2006") {
         wakeBtn.style.display = "block";
         status.textContent = "Code accepted";
         status.className = "status success";
       } else {
-        wakeBtn.style.display = "none";
-        choiceButtons.style.display = "none";
-        messageBox.style.display = "none";
-        status.textContent = "";
-        status.className = "status";
+        resetAll();
       }
     });
 
-    // When main Wake button is clicked → ask for message
+    // Show the 3 choices
     wakeBtn.addEventListener("click", () => {
       wakeBtn.style.display = "none";
       choiceButtons.style.display = "flex";
-      status.textContent = "Do you want to add a custom message?";
+      status.textContent = "Choose an option";
       status.className = "status";
     });
 
-    // User chooses YES → show message box
-    yesBtn.addEventListener("click", () => {
+    // Option 1 - Just Wake
+    document.getElementById("justWake").addEventListener("click", () => {
+      sendWake("WAKE_UP_NOW", "Wake Up!", false);
+    });
+
+    // Option 2 - Message only
+    document.getElementById("withMessage").addEventListener("click", () => {
+      mode = "message";
       choiceButtons.style.display = "none";
       messageBox.style.display = "block";
       customMessage.focus();
-      status.textContent = "Type your message below";
+      status.textContent = "Type your message";
     });
 
-    // User chooses NO → send normal wake
-    noBtn.addEventListener("click", () => {
-      sendWake("WAKE_UP_NOW", "Wake Up!");
+    // Option 3 - Message + Read Aloud
+    document.getElementById("withSpeak").addEventListener("click", () => {
+      mode = "speak";
+      choiceButtons.style.display = "none";
+      messageBox.style.display = "block";
+      customMessage.focus();
+      status.textContent = "Type the message that will be spoken";
     });
 
-    // Send with custom message
-    sendWithMessage.addEventListener("click", () => {
+    // Send button
+    sendBtn.addEventListener("click", () => {
       const msg = customMessage.value.trim();
       if (!msg) {
         status.textContent = "Please type a message first";
         status.className = "status error";
         return;
       }
-      sendWake(msg, "Message from WakeMeUp");
+
+      if (mode === "speak") {
+        // Special prefix so MacroDroid knows it should speak
+        sendWake("SPEAK:" + msg, "Message + Speak", true);
+      } else {
+        sendWake(msg, "Custom Message", false);
+      }
     });
 
-    // Main send function
-    async function sendWake(body, title) {
+    async function sendWake(body, title, isSpeak) {
       status.textContent = "Sending…";
       status.className = "status";
-      sendWithMessage.disabled = true;
-      noBtn.disabled = true;
+      sendBtn.disabled = true;
 
       try {
         const res = await fetch(`https://ntfy.sh/${TOPIC}`, {
@@ -303,38 +294,32 @@
           headers: {
             "Title": title,
             "Priority": "max",
-            "Tags": "rotating_light,alarm_clock"
+            "Tags": isSpeak ? "loudspeaker,rotating_light" : "rotating_light,alarm_clock"
           }
         });
 
         if (res.ok) {
           status.textContent = "Signal sent successfully!";
           status.className = "status success";
-
-          // Reset UI after 3 seconds
-          setTimeout(() => {
-            resetUI();
-          }, 3000);
+          setTimeout(resetAll, 2800);
         } else {
           throw new Error("Failed");
         }
       } catch (e) {
         status.textContent = "Connection error – try again";
         status.className = "status error";
-        sendWithMessage.disabled = false;
-        noBtn.disabled = false;
+        sendBtn.disabled = false;
       }
     }
 
-    function resetUI() {
+    function resetAll() {
+      wakeBtn.style.display = codeInput.value === "2006" ? "block" : "none";
       choiceButtons.style.display = "none";
       messageBox.style.display = "none";
-      wakeBtn.style.display = "block";
       customMessage.value = "";
-      sendWithMessage.disabled = false;
-      noBtn.disabled = false;
-      status.textContent = "Ready";
-      status.className = "status";
+      sendBtn.disabled = false;
+      status.textContent = codeInput.value === "2006" ? "Code accepted" : "";
+      status.className = codeInput.value === "2006" ? "status success" : "status";
     }
   </script>
 </body>
